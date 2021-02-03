@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">iBeer</string>
+    <string name="et_activity_details" />
+    <string name="b_search" />
+</resources>
