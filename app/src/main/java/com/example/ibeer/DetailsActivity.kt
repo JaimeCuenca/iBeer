@@ -28,7 +28,7 @@ class DetailsActivity : AppCompatActivity() {
         model = ViewModelProvider(this).get(DetailsActivityViewModel::class.java)
         detallesCerveza(id)
         binding.bBuscar.setOnClickListener {
-            detallesCerveza(binding.etDetails.text )
+            detallesCerveza(binding.etDetails.text.toString().toInt())
         }
     }
 
@@ -37,7 +37,7 @@ class DetailsActivity : AppCompatActivity() {
             if (it in 1..25) {
                 binding.progressBar.visibility = View.VISIBLE
                 GlobalScope.launch(Dispatchers.IO) {
-                    val resultado = model.getSingleItem((it+1).toString())
+                    val resultado = model.getSingleItem((it).toString())
                     withContext(Dispatchers.Main) {
                         binding.tvResultados.text = resultado?.get(0)?.name
                         if (resultado?.get(0)?.image_url != "https://images.punkapi.com/v2/keg.png") {
@@ -65,6 +65,12 @@ class DetailsActivity : AppCompatActivity() {
                         binding.progressBar.visibility = View.GONE
                     }
                 }
+            }else{
+                binding.progressBar.visibility = View.VISIBLE
+                binding.tvResultados.text = "Error, cerveza no encontrada"
+                binding.tvResultados2.isVisible = false
+                binding.ivDetalle.isVisible = false
+                binding.progressBar.visibility = View.GONE
             }
         }
     }
@@ -77,7 +83,7 @@ class DetailsActivity : AppCompatActivity() {
         }
         fun createDetailsActivity(context: Context, pos: Int) {
             val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra("id", pos)
+            intent.putExtra("id", pos+1)
             context.startActivity(intent)
         }
 
